@@ -1,0 +1,40 @@
+name: title2image-merge-request-flow
+run-name: Title2Image Test Flow 🚀
+on: [pull_request]
+jobs:
+  Lint:
+    strategy:
+      matrix:
+        node-version: [18.x]
+    runs-on: self-hosted
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install -g yarn
+      - run: yarn install --frozen-lockfile
+      - run: yarn lint
+      - run: npm uninstall -g yarn
+  Unit-Tests:
+    strategy:
+      matrix:
+        node-version: [18.x]
+    runs-on: self-hosted
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install -g yarn
+      - run: yarn install --frozen-lockfile
+      - run: yarn test
+      - run: npm uninstall -g yarn
