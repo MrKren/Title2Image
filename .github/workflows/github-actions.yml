@@ -1,11 +1,14 @@
 name: title2image-merge-request-flow
 run-name: Title2Image Test and Lint Flow 🚀
-on: [pull_request]
+on: 
+  pull_request:
+    types: [ opened, synchronize, reopened ]
 jobs:
   Backend-Lint:
     defaults:
       run:
         working-directory: ./src
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
