@@ -1,8 +1,21 @@
 name: title2image-merge-request-flow
-run-name: Title2Image Test Flow 🚀
+run-name: Title2Image Test and Lint Flow 🚀
 on: [pull_request]
 jobs:
-  Lint:
+  Backend-Lint:
+    defaults:
+      run:
+        working-directory: ./src
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.7'
+          cache: 'poetry' # caching pip dependencies
+      - run: poetry install
+      - run: poetry run flake8
+      - run: poetry run isort . -c
+  Frontend-Lint:
     strategy:
       matrix:
         node-version: [18.x]
@@ -20,7 +33,7 @@ jobs:
       - run: yarn install --frozen-lockfile
       - run: yarn lint
       - run: npm uninstall -g yarn
-  Unit-Tests:
+  Frontend-Unit-Tests:
     strategy:
       matrix:
         node-version: [18.x]
